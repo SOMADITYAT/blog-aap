@@ -21,7 +21,8 @@ exports.registerController = async (req, res) => {
     }
 
     const hashedpassword = await bcrypt.hash(password, 10);
-    password = hashedpassword;
+    console.log("hashed password", hashedpassword);
+    // password = hashedpassword;
 
     // Save new user
     const user = new userModel({ username, email, password: hashedpassword });
@@ -58,6 +59,7 @@ exports.getAllusers = async (req, res) => {
     });
   }
 };
+
 exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -68,6 +70,7 @@ exports.loginController = async (req, res) => {
         message: "please provide email or password",
       });
     }
+
     const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(500).send({
@@ -75,8 +78,9 @@ exports.loginController = async (req, res) => {
         message: "email is not registered",
       });
     }
+
     // Password
-    const isMatch = await bcrypt.compare(password, user, password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).send({
         success: false,

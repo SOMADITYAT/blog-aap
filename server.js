@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 dotenv.config();
 
 const userRoutes = require("./routes/userRoutes");
+const blogsRoutes = require("./routes/blogsRoutes");
 
 connectDB();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/blogs", blogsRoutes);
 
 // app.get("/", (req, res) => {
 //   res.status(200).send({
